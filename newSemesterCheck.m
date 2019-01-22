@@ -28,8 +28,8 @@ if strcmp(q_newSemester, 'Yes')
         if ~ exist('Students', 'dir')
             mkdir Students
         end
-        cd Students
         [~, roster] = xlsread(excelLookup.name);
+        cd Students
         studentRows = strcmp(roster(:, end), 'Student');
         roster = roster(studentRows, :);
         numStudents = size(roster, 1);
