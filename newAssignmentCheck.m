@@ -54,7 +54,7 @@ if strcmp(q_newAssignment, 'Yes')
             cd(tempDir)
         end
         cd(origDir)
-        rmdir temporary s
+        rmdir('temp', 's')
         waitfor(msgbox('The downloaded files have successfully been distributed into the students'' folders.', '', 'help'))
         q_deleteDownload = questdlg('Would you like to delete the bulk_download.zip archive?', '', 'Yes', 'No', 'No');
         if strcmp(q_deleteDownload, 'Yes')
