@@ -7,7 +7,7 @@ function [] = newAssignmentCheck(user_pref)
 % number of required submission files and the type of files they are.
 
 origDir = pwd;
-q_newAssignment = questdlg('Would you like to set up a new assignment?', 'New Assignment Check', 'Yes', 'No', 'No');
+q_newAssignment = questdlg('Would you like to set up a new assignment?', '', 'Yes', 'No', 'No');
 if strcmp(q_newAssignment, 'Yes')
     optRow = contains(user_pref(:, 1), 'opt_show_instructions_submissions');
     if user_pref{optRow, 2} == 1
@@ -16,7 +16,7 @@ if strcmp(q_newAssignment, 'Yes')
         help_2 = '2) Select Download All and check the All checkbox before pressing the blue Download button.\n';
         help_3 = '3) Download the file attachments that the students have submitted to the same directory as gradingScript.m. The file should be named bulk_download and should be a .zip archive.\n';
         help_4 = '4) Make sure that the file you just downloaded is the only .zip archive in the directory where gradingScript.m is found.';
-        q_instructions = questdlg(sprintf([warning help_1 help_2 help_3 help_4]), 'Instructions', 'Ready', 'Not Ready', 'Don''t Show Again', 'Not Ready');
+        q_instructions = questdlg(sprintf([warning help_1 help_2 help_3 help_4]), '', 'Ready', 'Not Ready', 'Don''t Show Again', 'Not Ready');
         if strcmp(q_instructions, 'Don''t Show Again')
             user_pref{optRow, 2} = 0;
             save('user_pref.mat', 'user_pref')
@@ -64,7 +64,7 @@ if strcmp(q_newAssignment, 'Yes')
         duplicateIndex = find(contains(gradebook(1, :), assignmentName), 1);
         q_duplicateGradebookClear = 'No';
         if duplicateIndex > 0
-            q_duplicateGradebookClear = questdlg([assignmentName ' already exists. Would you like to clear the grades for ' assignmentName '?'], 'Clear Assignment Grades', 'Yes', 'No', 'No');
+            q_duplicateGradebookClear = questdlg([assignmentName ' already exists. Would you like to clear the grades for ' assignmentName '?'], '', 'Yes', 'No', 'No');
             if strcmp(q_duplicateGradebookClear, 'Yes')
                 gradebook(2:end, duplicateIndex) = {[]};
             end
@@ -75,7 +75,7 @@ if strcmp(q_newAssignment, 'Yes')
         cd Assignments
         q_duplicateAssignmentOverwrite = 'Yes';
         if exist(assignmentName, 'dir') == 7
-            q_duplicateAssignmentOverwrite = questdlg([assignmentName ' has already been set up or partially set up. Would you like to set it up again and overwrite current settings?'], 'Overwrite Assignment Settings', 'Yes', 'No', 'No');
+            q_duplicateAssignmentOverwrite = questdlg([assignmentName ' has already been set up or partially set up. Would you like to set it up again and overwrite current settings?'], '', 'Yes', 'No', 'No');
         end
         if strcmp(q_duplicateAssignmentOverwrite, 'Yes')
             if ~ exist(assignmentName, 'dir')
@@ -124,7 +124,7 @@ if strcmp(q_newAssignment, 'Yes')
                     q_numFiles(prob) = str2double(inputdlg(['How many files do students have to submit for Problem ' num2str(prob) ' of ' assignmentName '?']));
                 end
             end
-            q_text_sol = questdlg('Is there a text solutions file?', 'Text Solutions File', 'Yes', 'No', 'No');
+            q_text_sol = questdlg('Is there a text solutions file?', '', 'Yes', 'No', 'No');
             q_counter = 1;
             q_submissionList = cell(sum(q_numFiles), 3);
             prompt_fileNames = cell(max(q_numFiles), length(q_numParts));

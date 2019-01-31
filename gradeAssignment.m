@@ -4,7 +4,7 @@ function [] = gradeAssignment()
 % the assignment and prompts the user for the number of points to award and
 % comments for any deducted points.
 
-q_gradeAssignment = questdlg('Would you like to grade an assignment?', 'Grade Assignment Check', 'Yes', 'No', 'No');
+q_gradeAssignment = questdlg('Would you like to grade an assignment?', '', 'Yes', 'No', 'No');
 originalDirectory = pwd;
 if strcmp(q_gradeAssignment, 'Yes')
     assignmentsDir = struct2cell(dir('Assignments'))';
@@ -26,7 +26,7 @@ if strcmp(q_gradeAssignment, 'Yes')
     end
     gradedStudents = gradeStatus(~ contains(gradeStatus(:, 2), 'Not Graded'), 1);
     if ~ isempty(gradedStudents)
-        q_addGradedStudents = questdlg('Would you like to revisit any work that has already been graded?', 'Revisit Graded Work', 'Yes', 'No', 'No');
+        q_addGradedStudents = questdlg('Would you like to revisit any work that has already been graded?', '', 'Yes', 'No', 'No');
         if strcmp(q_addGradedStudents, 'Yes')
             q_addGradedStudentsSel = listdlg('PromptString', 'Choose student(s) to add.', 'ListString', gradedStudents);
             gradeStatus(q_addGradedStudentsSel, 2) = {'Not Graded'};
@@ -157,6 +157,7 @@ if strcmp(q_gradeAssignment, 'Yes')
         fclose(graderComments);
         cd([originalDirectory '\Students'])
         gradebook{contains(gradebook(:, 1), studentName(1:strfind(studentName, '(') - 1)), gradebookCol} = sum(nansum(earnedPoints));
+        save('gradebook.mat', 'gradebook')
         cd([originalDirectory '\Assignments\' assignmentName])
         gradeStatus{remainingStudentsInd(curStudentInd), 2} = 'Graded';
         save('gradeStatus.mat', 'gradeStatus')
