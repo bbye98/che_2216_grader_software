@@ -154,7 +154,11 @@ if strcmp(q_newAssignment, 'Yes')
                 q_counter = q_counter + q_numFiles(q);
             end
             if strcmp(q_text_sol, 'Yes')
-                q_submissionList = [{[1], 'Text_solutions.pdf', []}; q_submissionList];
+                if contains(assignmentName, 'Homework')
+                    q_submissionList = [{1, 'HW' assignmentName(strfind(assignmentName, ' ') + 1:end) '_textsolution.pdf', []}; q_submissionList];
+                elseif contains(assignmentName, 'Project')
+                    q_submissionList = [{1, 'P' assignmentName(strfind(assignmentName, ' ') + 1:end) '_textsolution.pdf', []}; q_submissionList];
+                end
             end
             extStartInd = strfind(q_submissionList(:, 2), '.');
             for file_num = 1:size(q_submissionList, 1)
