@@ -36,7 +36,7 @@ if strcmp(q_gradeAssignment, 'Yes')
     earnedPoints = 0 * q_pointValues;
     earnedComments = cell(size(q_pointValues, 1), size(q_pointValues, 2));
     alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    while ~ isempty(find(contains(gradeStatus(:, 2), 'Not Graded')))
+    while ~ isempty(find(contains(gradeStatus(:, 2), 'Not Graded'), 1))
         remainingStudentsInd = find(contains(gradeStatus(:, 2), 'Not Graded'));
         if ~ exist('curStudentInd', 'var')
             curStudentInd = 1;
@@ -57,9 +57,6 @@ if strcmp(q_gradeAssignment, 'Yes')
             studentName = studentsDir{remainingStudentsInd(curStudentInd)};
             cd([originalDirectory '\Students\' studentName '\' assignmentName])
         end
-        graderComments = fopen('graderComments.doc', 'w');
-        fprintf(graderComments, ['Student: ' studentName '\n']);
-        fprintf(graderComments, ['Assignment: ' assignmentName '\n']);
         for cur_prob = 1:length(q_numParts)
             for a = find([q_submissionList{:, 1}] == cur_prob)
                 if strcmp(q_submissionList{a, 3}, 'MATLAB Script')
@@ -106,6 +103,9 @@ if strcmp(q_gradeAssignment, 'Yes')
                     end
                 end
             end
+            graderComments = fopen('graderComments.doc', 'w');
+            fprintf(graderComments, ['Student: ' studentName '\n']);
+            fprintf(graderComments, ['Assignment: ' assignmentName '\n']);
             for c = 1:q_numParts(cur_prob)
                 if q_numParts(cur_prob) == 1
                     tempScore = str2double(inputdlg({['How many points would you like to award ' studentName ' for his work for ' assignmentName ' Problem ' num2str(cur_prob) '? (Max: ' num2str(q_pointValues(cur_prob, c)) ')']}));
