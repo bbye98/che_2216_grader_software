@@ -24,19 +24,21 @@ if strcmp(q_gradeAssignment, 'Yes')
     else
         load(['Assignments\' assignmentName '\gradeStatus.mat'], 'gradeStatus')
     end
-    gradedStudents = gradeStatus(~ contains(gradeStatus(:, 2), 'Not Graded'), 1);
+    gradedInd = find(~ contains(gradeStatus(:, 2), 'Not Graded'));
+    gradedStudents = gradeStatus(gradedInd, 1);
     if ~ isempty(gradedStudents)
         q_addGradedStudents = questdlg('Would you like to revisit any work that has already been graded?', '', 'Yes', 'No', 'No');
         if strcmp(q_addGradedStudents, 'Yes')
             q_addGradedStudentsSel = listdlg('PromptString', 'Choose student(s) to add.', 'ListString', gradedStudents);
-            gradeStatus(q_addGradedStudentsSel, 2) = {'Not Graded'};
+            gradeStatus(gradedInd(q_addGradedStudentsSel), 2) = {'Not Graded'};
+            save(['Assignments\' assignmentName '\gradeStatus.mat'], 'gradeStatus')
         end
     end
     cd Students
     earnedPoints = 0 * q_pointValues;
     earnedComments = cell(size(q_pointValues, 1), size(q_pointValues, 2));
     alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    while ~ isempty(find(contains(gradeStatus(:, 2), 'Not Graded'), 1))
+    while ~ isempty(find(contains(gradeStatus(:, 2), 'Not Graded')))
         remainingStudentsInd = find(contains(gradeStatus(:, 2), 'Not Graded'));
         if ~ exist('curStudentInd', 'var')
             curStudentInd = 1;
@@ -57,6 +59,9 @@ if strcmp(q_gradeAssignment, 'Yes')
             studentName = studentsDir{remainingStudentsInd(curStudentInd)};
             cd([originalDirectory '\Students\' studentName '\' assignmentName])
         end
+        graderComments = fopen('graderComments.doc', 'w');
+        fprintf(graderComments, ['Student: ' studentName '\n']);
+        fprintf(graderComments, ['Assignment: ' assignmentName '\n']);
         for cur_prob = 1:length(q_numParts)
             for a = find([q_submissionList{:, 1}] == cur_prob)
                 if strcmp(q_submissionList{a, 3}, 'MATLAB Script')
@@ -103,9 +108,6 @@ if strcmp(q_gradeAssignment, 'Yes')
                     end
                 end
             end
-            graderComments = fopen('graderComments.doc', 'w');
-            fprintf(graderComments, ['Student: ' studentName '\n']);
-            fprintf(graderComments, ['Assignment: ' assignmentName '\n']);
             for c = 1:q_numParts(cur_prob)
                 if q_numParts(cur_prob) == 1
                     tempScore = str2double(inputdlg({['How many points would you like to award ' studentName ' for his work for ' assignmentName ' Problem ' num2str(cur_prob) '? (Max: ' num2str(q_pointValues(cur_prob, c)) ')']}));
