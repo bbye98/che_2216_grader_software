@@ -54,7 +54,11 @@ if strcmp(q_newAssignment, 'Yes')
             cd(tempDir)
         end
         cd(origDir)
-        rmdir('temp', 's')
+        try
+            rmdir temp s
+        catch
+            waitfor(msgbox('Some files in the temporary directory is in use, so the temporary directory cannot be deleted.'))
+        end
         waitfor(msgbox('The downloaded files have successfully been distributed into the students'' folders.', '', 'help'))
         q_deleteDownload = questdlg('Would you like to delete the bulk_download.zip archive?', '', 'Yes', 'No', 'No');
         if strcmp(q_deleteDownload, 'Yes')
@@ -155,9 +159,9 @@ if strcmp(q_newAssignment, 'Yes')
             end
             if strcmp(q_text_sol, 'Yes')
                 if contains(assignmentName, 'Homework')
-                    q_submissionList = [{1, 'HW' assignmentName(strfind(assignmentName, ' ') + 1:end) '_textsolution.pdf', []}; q_submissionList];
+                    q_submissionList = [{1, ['HW' assignmentName(end) '_textsolution.pdf'], []}; q_submissionList];
                 elseif contains(assignmentName, 'Project')
-                    q_submissionList = [{1, 'P' assignmentName(strfind(assignmentName, ' ') + 1:end) '_textsolution.pdf', []}; q_submissionList];
+                    q_submissionList = [{1, ['P' assignmentName(end) '_textsolution.pdf'], []}; q_submissionList];
                 end
             end
             extStartInd = strfind(q_submissionList(:, 2), '.');
