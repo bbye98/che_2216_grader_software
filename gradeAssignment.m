@@ -63,45 +63,45 @@ if strcmp(q_gradeAssignment, 'Yes')
         fprintf(graderComments, ['Student: ' studentName '\n']);
         fprintf(graderComments, ['Assignment: ' assignmentName '\n']);
         for cur_prob = 1:length(q_numParts)
-            for a = find([q_submissionList{:, 1}] == cur_prob)
-                if strcmp(q_submissionList{a, 3}, 'MATLAB Script')
-                    if exist(q_submissionList{a, 2}, 'file') == 2
-                        waitfor(msgbox(['Press OK to run ' studentName '''s MATLAB script ' q_submissionList{a, 2} '. Press Enter in the Command Window after reviewing the answers to continue.']))
+            for relevantFiles = find([q_submissionList{:, 1}] == cur_prob)
+                if strcmp(q_submissionList{relevantFiles, 3}, 'MATLAB Script')
+                    if exist(q_submissionList{relevantFiles, 2}, 'file') == 2
+                        waitfor(msgbox(['Press OK to run ' studentName '''s MATLAB script ' q_submissionList{relevantFiles, 2} '. Press Enter in the Command Window after reviewing the answers to continue.']))
                         try
-                            run(q_submissionList{a, 2});
+                            run(q_submissionList{relevantFiles, 2});
                         catch
-                            warning(['There was an error that prevented ' q_submissionList{a, 2} ' from successfully running.'])
+                            warning(['There was an error that prevented ' q_submissionList{relevantFiles, 2} ' from successfully running.'])
                         end
                         pause
                         close all
                     else
-                        waitfor(msgbox([studentName '''s MATLAB script ' q_submissionList{a, 2} ' was not found.'], 'Error', 'error'))
+                        waitfor(msgbox([studentName '''s MATLAB script ' q_submissionList{relevantFiles, 2} ' was not found.'], 'Error', 'error'))
                     end
-                elseif strcmp(q_submissionList{a, 3}, 'MATLAB Function')
-                    if exist(q_submissionList{a, 2}, 'file') == 2
-                        waitfor(msgbox(['Press OK to open ' studentName '''s MATLAB script ' q_submissionList{a, 2} '. Press Enter in the Command Window after reviewing the answers to close the MATLAB function and continue.']))
-                        open(q_submissionList{a, 2});
+                elseif strcmp(q_submissionList{relevantFiles, 3}, 'MATLAB Function')
+                    if exist(q_submissionList{relevantFiles, 2}, 'file') == 2
+                        waitfor(msgbox(['Press OK to open ' studentName '''s MATLAB function ' q_submissionList{relevantFiles, 2} '. Press Enter in the Command Window after reviewing the answers to close the MATLAB function and continue.']))
+                        open(q_submissionList{relevantFiles, 2});
                         pause
                         edtSvc = com.mathworks.mlservices.MLEditorServices;
                         edtList = edtSvc.getEditorApplication.getOpenEditors.toArray;
                         [~, fname] = fileparts(char(edtList(end).getLongName.toString));
                         edt.(fname) = edtList(end);
-                        edt.(q_submissionList{a, 2}(1:end - 2)).close
+                        edt.(q_submissionList{relevantFiles, 2}(1:end - 2)).close
                     else
-                        waitfor(msgbox([studentName '''s MATLAB function ' q_submissionList{a, 2} ' was not found.'], 'Error', 'error'))
+                        waitfor(msgbox([studentName '''s MATLAB function ' q_submissionList{relevantFiles, 2} ' was not found.'], 'Error', 'error'))
                     end
-                elseif strcmp(q_submissionList{a, 3}, 'Figure')
-                    if exist(q_submissionList{a, 2}, 'file') == 2
-                        waitfor(msgbox(['Press OK to open ' studentName '''s figure ' q_submissionList{a, 2} '. Press Enter in the Command Window after reviewing the figure to continue.']))
-                        open(q_submissionList{a, 2});
+                elseif strcmp(q_submissionList{relevantFiles, 3}, 'Figure')
+                    if exist(q_submissionList{relevantFiles, 2}, 'file') == 2
+                        waitfor(msgbox(['Press OK to open ' studentName '''s figure ' q_submissionList{relevantFiles, 2} '. Press Enter in the Command Window after reviewing the figure to continue.']))
+                        open(q_submissionList{relevantFiles, 2});
                         pause
                     else
-                        waitfor(msgbox([studentName '''s figure ' q_submissionList{a, 2} ' was not found.'], 'Error', 'error'))
+                        waitfor(msgbox([studentName '''s figure ' q_submissionList{relevantFiles, 2} ' was not found.'], 'Error', 'error'))
                     end
-                elseif strcmp(q_submissionList{a, 3}, 'Text Solutions')
-                    if exist(q_submissionList{a, 2}, 'file') == 2
+                elseif strcmp(q_submissionList{relevantFiles, 3}, 'Text Solutions')
+                    if exist(q_submissionList{relevantFiles, 2}, 'file') == 2
                         waitfor(msgbox(['Press OK to open ' studentName '''s text solutions. Press Enter in the Command Window after reviewing the document to continue.']))
-                        open(q_submissionList{a, 2});
+                        open(q_submissionList{relevantFiles, 2});
                         pause
                     else
                         waitfor(msgbox([studentName ' did not submit text solutions or they are in a misnamed file.'], 'Error', 'error'))
