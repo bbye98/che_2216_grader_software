@@ -1,5 +1,5 @@
-# che_2216_grader_software
-Software that automates most of the grading process for Professor Giri's CHE 2216: Modeling and Simulation in Chemical Engineering course
+# Grader Software for CHE 2216: Modeling and Simulation in Chemical Engineering
+Software that automates most of the grading process for Professor Giri's CHE 2216 course at the University of Virginia
 
 Features:
 - Automatically creates individual student folders and a local gradebook from the class roster downloaded from UVACollab.
