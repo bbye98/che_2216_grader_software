@@ -12,7 +12,7 @@ Features:
 - Presents options and requests user inputs in easy-to-use user interfaces with instructions.
 - Parses and checks all user inputs for validity.
 - Catches errors and throws exceptions instead of stopping the program.
+- Automatically enters students' folders and copies the contents of their graderComments.doc file for easy entry into the UVACollab grading system.
 
 To-Dos:
-- Create function to enter each student's folder and open his/her graderComments.doc for easier grade entry on UVACollab.
 - Reprogram the gradeAssignment.m function to split assignments into two halves for consistency in grading between two graders.
